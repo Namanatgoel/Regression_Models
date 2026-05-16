@@ -1,4 +1,4 @@
-Production-Grade Regression Models Repository
+Regression Models Repository
 =============================================
 
 Abstract
