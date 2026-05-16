@@ -13,7 +13,7 @@ from src.preprocessing import preprocess_linear_data, preprocess_logistic_data
 
 def train_linear(data_path: str):
     df = load_data(data_path)
-    X, y, feature_names = preprocess_linear_data(df) # Captured feature_names
+    X, y, feature_names = preprocess_linear_data(df)
     
     split_idx = int(0.8 * len(X))
     X_train, X_test = X[:split_idx], X[split_idx:]
@@ -23,7 +23,6 @@ def train_linear(data_path: str):
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
     
-    # Pass 4 arguments instead of 2
     evaluate_linear(y_test, y_pred, feature_names, model.weights)
 
 def train_logistic(data_path: str):
@@ -44,7 +43,6 @@ def train_logistic(data_path: str):
 def train_linear(data_path: str):
     df = load_data(data_path)
     
-    # Compute Curve C prior to preprocessing
     plot_correlation_heatmap(df, "Linear")
     
     X, y, feature_names = preprocess_linear_data(df)
@@ -62,7 +60,6 @@ def train_linear(data_path: str):
 def train_logistic(data_path: str):
     df = load_data(data_path)
     
-    # Compute Curve C prior to preprocessing
     plot_correlation_heatmap(df, "Logistic")
     
     X, y = preprocess_logistic_data(df)
@@ -74,11 +71,9 @@ def train_logistic(data_path: str):
     model = VectorizedLogisticRegression(learning_rate=0.05, epochs=5000)
     model.fit(X_train, y_train)
     
-    # Generate binary predictions and continuous class probabilities
     y_pred = model.predict(X_test)
     y_prob = model.predict_proba(X_test) 
-    
-    # Evaluates Confusion Matrix, ROC, and Curve B (PR Curve)
+
     evaluate_logistic(y_test, y_pred, y_prob)
     
 if __name__ == "__main__":

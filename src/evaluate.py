@@ -20,7 +20,6 @@ def plot_correlation_heatmap(df: pd.DataFrame, model_name: str):
     # Isolate numeric metrics to prevent casting errors
     numeric_df = df.select_dtypes(include=[np.number])
     
-    # Generate heatmap with a diverging color palette centered at 0
     sns.heatmap(numeric_df.corr(), annot=True, cmap='RdBu_r', fmt='.2f', vmin=-1, vmax=1)
     plt.title(f'Feature Correlation Matrix ({model_name} Pipeline)')
     plt.tight_layout()
@@ -31,8 +30,6 @@ def plot_correlation_heatmap(df: pd.DataFrame, model_name: str):
 def evaluate_linear(y_true: np.ndarray, y_pred: np.ndarray, feature_names: list, weights: np.ndarray):
     """Generates all Linear Regression visualizations and logs metrics."""
     os.makedirs('outputs/linear', exist_ok=True)
-    
-    # Residual Plot
     residuals = y_true - y_pred
     plt.figure(figsize=(10, 6))
     plt.scatter(y_pred, residuals, alpha=0.6, edgecolors='w', color='teal')
@@ -45,7 +42,6 @@ def evaluate_linear(y_true: np.ndarray, y_pred: np.ndarray, feature_names: list,
     plt.savefig('outputs/linear/residuals.png')
     plt.close()
     
-    # Actual vs Predicted
     plt.figure(figsize=(10, 6))
     plt.scatter(y_true, y_pred, alpha=0.6, edgecolors='w', color='navy')
     plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--', lw=2)
@@ -57,7 +53,6 @@ def evaluate_linear(y_true: np.ndarray, y_pred: np.ndarray, feature_names: list,
     plt.savefig('outputs/linear/actual_vs_pred.png')
     plt.close()
 
-    # Feature Importance
     plt.figure(figsize=(10, 6))
     coeffs = pd.Series(weights, index=feature_names).sort_values()
     coeffs.plot(kind='barh', color='crimson')
@@ -75,7 +70,6 @@ def evaluate_logistic(y_true: np.ndarray, y_pred: np.ndarray, y_prob: np.ndarray
     """Generates all Logistic Regression visualizations and logs metrics."""
     os.makedirs('outputs/logistic', exist_ok=True)
 
-    # Confusion Matrix
     plt.figure(figsize=(8, 6))
     cm = confusion_matrix(y_true, y_pred)
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False)
@@ -86,7 +80,6 @@ def evaluate_logistic(y_true: np.ndarray, y_pred: np.ndarray, y_prob: np.ndarray
     plt.savefig('outputs/logistic/confusion_matrix.png')
     plt.close()
 
-    # ROC Curve
     fpr, tpr, _ = roc_curve(y_true, y_prob)
     plt.figure(figsize=(10, 6))
     plt.plot(fpr, tpr, label=f'AUC = {roc_auc_score(y_true, y_prob):.4f}', color='darkorange', lw=2)
@@ -99,8 +92,7 @@ def evaluate_logistic(y_true: np.ndarray, y_pred: np.ndarray, y_prob: np.ndarray
     plt.tight_layout()
     plt.savefig('outputs/logistic/roc_curve.png')
     plt.close()
-    
-    # Precision-Recall Curve
+
     precision, recall, _ = precision_recall_curve(y_true, y_prob)
     ap_score = average_precision_score(y_true, y_prob)
     

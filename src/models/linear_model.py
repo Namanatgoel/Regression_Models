@@ -18,13 +18,11 @@ class VectorizedLinearRegression:
         for _ in range(self.epochs):
             y_pred = np.dot(X, self.weights) + self.bias
             
-            # Gradients
             dw = (1 / m) * np.dot(X.T, (y_pred - y))
             db = (1 / m) * np.sum(y_pred - y)
 
-            # Update parameters
             self.weights -= self.learning_rate * dw
             self.bias -= self.learning_rate * db
 
-    def predict(self, X: np.ndarray) -> np.ndarray:
+    def predict(self, X: np.ndarray):
         return np.dot(X, self.weights) + self.bias

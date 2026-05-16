@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
-def preprocess_linear_data(df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, list]:
+def preprocess_linear_data(df: pd.DataFrame):
     """
     Preprocesses data for the Linear Regression model (Boston Housing).
     Implements median imputation for 'CRIM' and scaling without inplace warnings.
@@ -25,14 +25,13 @@ def preprocess_linear_data(df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray, li
 
     return X_scaled, y, feature_names
 
-def preprocess_logistic_data(df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
+def preprocess_logistic_data(df: pd.DataFrame):
     """
     Preprocesses data for Logistic Regression model (Titanic).
     Drops uninformative string columns, handles missing values, and one-hot encodes categorical features.
     """
     df_processed = df.copy()
 
-    # Drop categorical/uninformative columns that cannot be cast to float
     cols_to_drop = ['PassengerId', 'Name', 'Ticket', 'Cabin']
     df_processed = df_processed.drop(columns=[c for c in cols_to_drop if c in df_processed.columns])
 
@@ -49,7 +48,6 @@ def preprocess_logistic_data(df: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
     else:
         raise KeyError("Target column 'Survived' not found in dataset.")
 
-    # One-Hot Encoding for remaining categorical string features ('Sex', 'Embarked')
     X_df = pd.get_dummies(X_df, columns=[c for c in ['Sex', 'Embarked'] if c in X_df.columns], drop_first=True)
 
     X = X_df.values.astype(float)
