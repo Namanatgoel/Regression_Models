@@ -11,34 +11,6 @@ from src.evaluate import evaluate_linear, evaluate_logistic, plot_correlation_he
 from src.data_loader import load_data
 from src.preprocessing import preprocess_linear_data, preprocess_logistic_data
 
-def train_linear(data_path: str):
-    df = load_data(data_path)
-    X, y, feature_names = preprocess_linear_data(df)
-    
-    split_idx = int(0.8 * len(X))
-    X_train, X_test = X[:split_idx], X[split_idx:]
-    y_train, y_test = y[:split_idx], y[split_idx:]
-
-    model = VectorizedLinearRegression(learning_rate=0.01, epochs=2000)
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    
-    evaluate_linear(y_test, y_pred, feature_names, model.weights)
-
-def train_logistic(data_path: str):
-    df = load_data(data_path)
-    X, y = preprocess_logistic_data(df)
-
-    split_idx = int(0.8 * len(X))
-    X_train, X_test = X[:split_idx], X[split_idx:]
-    y_train, y_test = y[:split_idx], y[split_idx:]
-
-    model = VectorizedLogisticRegression(learning_rate=0.01, epochs=2000)
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    y_prob = model.predict_proba(X_test)
-
-    evaluate_logistic(y_test, y_pred, y_prob)
 
 def train_linear(data_path: str):
     df = load_data(data_path)
